@@ -1,4 +1,4 @@
-from litepolis_database_template.Conversations import ConversationManager
+from litepolis_database_starrocks.Conversations import ConversationManager
 import pytest
 
 def test_create_conversation():

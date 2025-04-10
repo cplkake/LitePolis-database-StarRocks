@@ -1,4 +1,4 @@
-from litepolis_database_template.Users import UserManager
+from litepolis_database_starrocks.Users import UserManager
 
 
 def test_create_user():

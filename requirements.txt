@@ -1,3 +1,4 @@
 litepolis
 pytest
 sqlmodel
+pymysql

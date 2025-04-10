@@ -1,4 +1,4 @@
-from litepolis_database_template import DatabaseActor
+from litepolis_database_starrocks import DatabaseActor
 
 
 def test_actor_create_user_and_conversation():

@@ -1,5 +1,5 @@
 import pytest
-from litepolis_database_template import Actor, DEFAULT_CONFIG
+from litepolis_database_starrocks import Actor, DEFAULT_CONFIG
 
 def test_actor_name():
     """Verify the DatabaseActor class name."""
