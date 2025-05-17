@@ -21,11 +21,14 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
+        env:
+          FE_SERVERS: "127.0.0.1:9010"
+          JAVA_OPTS: "-Duser.timezone=UTC"
 
       starrocks-be:
         image: starrocks/be-ubuntu:latest
         options: >-
-          --env FE_SERVERS=fe1:127.0.0.1:9010
+          --env FE_SERVERS=127.0.0.1:9010
           --env BE_ADDR=127.0.0.1:9050
 
     steps:
