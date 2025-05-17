@@ -21,6 +21,7 @@ jobs:
           --health-interval=10s
           --health-timeout=5s
           --health-retries=10
+          --health-start-period=90s
         env:
           FE_SERVERS: "127.0.0.1:9010"
           JAVA_OPTS: "-Duser.timezone=UTC"
