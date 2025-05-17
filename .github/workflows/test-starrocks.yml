@@ -1,0 +1,71 @@
+name: StarRocks Integration Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    services:
+      starrocks-fe:
+        image: starrocks/fe-ubuntu:latest
+        ports:
+          - 8030:8030       # HTTP port
+          - 9030:9030       # MySQL-compatible query port
+        options: >-
+          --health-cmd="curl -f http://localhost:8030 || exit 1"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+      starrocks-be:
+        image: starrocks/be-ubuntu:latest
+        options: --network-alias=starrocks-be
+        env:
+          FE_SERVERS: "fe1:127.0.0.1:9010"
+          BE_ADDR: "127.0.0.1:9050"
+        depends_on:
+          starrocks-fe:
+            condition: service_healthy
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Wait for StarRocks FE to be ready
+        run: |
+          echo "Waiting for StarRocks FE (max 60s)..."
+          for i in {1..30}; do
+            if mysql -h127.0.0.1 -P9030 -uroot -e "SHOW DATABASES;" &>/dev/null; then
+              echo "StarRocks FE is ready!"
+              break
+            fi
+            sleep 2
+          done
+      
+      - name: Create `litepolis` database
+        run: |
+          mysql -h 127.0.0.1 -P 9030 -u root -e "CREATE DATABASE IF NOT EXISTS litepolis;"
+
+      - name: Run tests
+        env:
+          STARROCKS_DB_URL: mysql+pymysql://root:@127.0.0.1:9030/litepolis
+          SQLALCHEMY_POOL_SIZE: 5
+          SQLALCHEMY_MAX_OVERFLOW: 10
+          PYTEST_CURRENT_TEST: true
+        run: |
+          pytest tests/
