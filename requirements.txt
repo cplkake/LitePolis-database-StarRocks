@@ -1,4 +1,0 @@
-litepolis
-pytest
-sqlmodel
-pymysql

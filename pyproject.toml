@@ -1,0 +1,46 @@
+[build-system]
+requires = [
+    "setuptools>=61.2",
+]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "litepolis-database-starrocks"
+version = "0.0.2"
+authors = [
+    { name = "cplkake" },
+]
+description = "An example package to develop StarRocks compatible database tables/extensions"
+dependencies = [
+    "litepolis",
+    "sqlmodel",
+    "sqlalchemy",
+    "pymysql",
+    "inflection",
+    "starrocks",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest",
+]
+
+[project.license]
+text = "file: LICENSE"
+
+[project.readme]
+file = "README.md"
+content-type = "text/markdown"
+
+[project.urls]
+Homepage = "https://github.com/cplkake/litepolis-database-starrocks"
+
+[tool.setuptools]
+include-package-data = false
+
+[tool.setuptools.packages.find]
+exclude = [
+    "tests",
+    "docs",
+]
+namespaces = false
