@@ -1,4 +1,8 @@
 from pathlib import Path
+from uuid import uuid4
+
+def generate_unique_username():
+    return f"testuser_{uuid4().hex[:8]}"
 
 def find_package_name():
     """Find the package name by looking for a directory starting with `litepolis_database_`."""
