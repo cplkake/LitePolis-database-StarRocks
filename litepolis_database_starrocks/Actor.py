@@ -1,9 +1,23 @@
 from typing import Dict, Any, List
 
-from .Users import UserManager
-from .Conversations import ConversationManager
+from .Comment import CommentManager
+from .Conversation import ConversationManager
+from .UserCluster import UserClusterManager
+from .UserPca import UserPcaManager
+from .User import UserManager
+from .Vote import VoteManager
 
-class DatabaseActor(UserManager, ConversationManager):
+from .utils_StarRocks import create_db_and_tables
+create_db_and_tables()
+
+class DatabaseActor(
+    CommentManager,
+    ConversationManager,
+    UserClusterManager,
+    UserPcaManager,
+    UserManager,
+    VoteManager,
+):
     """
     DatabaseActor class for LitePolis.
 
