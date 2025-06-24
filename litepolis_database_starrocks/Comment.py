@@ -86,21 +86,16 @@ from typing import Optional, List, Type, Any, Dict, Generator
 from datetime import datetime, UTC
 from uuid import uuid4, UUID
 
-from .Actor import DatabaseActor
-
-
 from .utils import get_session, is_starrocks_engine
 from .utils_StarRocks import register_table
 
 @register_table(distributed_by="HASH(id)")
 class Comment(SQLModel, table=True):
-    __tablename__ = "comments"
+    __tablename__ = "comment"
     __table_args__ = (
         Index("ix_comment_created", "created"),
         Index("ix_comment_conversation_id", "conversation_id"),
         Index("ix_comment_user_id", "user_id"),
-        ForeignKeyConstraint(['user_id'], ['users.id'], name='fk_comment_user_id'),
-        ForeignKeyConstraint(['conversation_id'], ['conversations.id'], name='fk_comment_conversation_id')
     )
 
 
@@ -108,8 +103,8 @@ class Comment(SQLModel, table=True):
     created: datetime = Field(default_factory=lambda: datetime.now(UTC))
     modified: datetime = Field(default_factory=lambda: datetime.now(UTC))
     content: str = Field(nullable=False)
-    user_id: Optional[UUID] = Field(default=None, foreign_key="users.id")
-    conversation_id: Optional[UUID] = Field(default=None, foreign_key="conversations.id")
+    user_id: Optional[UUID] = Field(default=None, foreign_key="user.id")
+    conversation_id: Optional[UUID] = Field(default=None, foreign_key="conversation.id")
     approved: bool = Field(default=False)
 
     user: Optional["User"] = Relationship(back_populates="comments")

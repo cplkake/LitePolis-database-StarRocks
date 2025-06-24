@@ -24,7 +24,7 @@ class Conversation(SQLModel, table=True):
     modified: datetime = Field(default_factory=lambda: datetime.now(UTC))
 
     comments: List["Comment"] = Relationship(back_populates="conversation")
-    author: Optional["User"] = Relationship(back_populates="conversation",
+    author: Optional["User"] = Relationship(back_populates="conversations",
                                           sa_relationship_kwargs={
                                             "foreign_keys": "Conversation.author_id"})
     pcas: List["UserPca"] = Relationship(back_populates="conversation")

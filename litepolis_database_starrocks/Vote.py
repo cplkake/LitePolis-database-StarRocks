@@ -78,14 +78,12 @@ class Vote(SQLModel, table=True):
         Index("ix_vote_user_id", "user_id"),
         Index("ix_vote_comment_id", "comment_id"),
         UniqueConstraint("user_id", "comment_id", name="uc_user_comment"),
-        ForeignKeyConstraint(['user_id'], ['users.id'], name='fk_vote_user_id'),
-        ForeignKeyConstraint(['comment_id'], ['comments.id'], name='fk_vote_comment_id')
     )
     
     id: UUID = Field(primary_key=True, default_factory=uuid4)
     value: int  = Field(nullable=False)
-    user_id: Optional[UUID] = Field(default=None, foreign_key="users.id")
-    comment_id: Optional[UUID] = Field(default=None, foreign_key="comments.id")
+    user_id: Optional[UUID] = Field(default=None, foreign_key="user.id")
+    comment_id: Optional[UUID] = Field(default=None, foreign_key="comment.id")
     created: datetime = Field(default_factory=lambda: datetime.now(UTC))
     modified: datetime = Field(default_factory=lambda: datetime.now(UTC))
 

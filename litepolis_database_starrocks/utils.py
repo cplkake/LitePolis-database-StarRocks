@@ -15,6 +15,7 @@ database_url = DEFAULT_CONFIG.get("starrocks_url")
 engine_pool_size = DEFAULT_CONFIG.get("sqlalchemy_engine_pool_size")
 pool_max_overflow = DEFAULT_CONFIG.get("sqlalchemy_pool_max_overflow")
 
+# fetches runtime configuration values if not testing
 if ("PYTEST_CURRENT_TEST" not in os.environ and
     "PYTEST_VERSION" not in os.environ):
     database_url = get_config("litepolis_database_starrocks", "starrocks_url")
@@ -37,6 +38,9 @@ def get_session():
 
 def is_starrocks_engine(engine=engine) -> bool:
     """Determine if the engine is connected to StarRocks"""
+    print("checking if starrocks engine")
+    print(f"engine dialect name is {engine.dialect.name.lower()}")
+    print(f"engine url name is {engine.url.drivername.lower()}")
     # Method 1: Check dialect name
     if 'starrocks' in engine.dialect.name.lower():
         return True
@@ -48,10 +52,12 @@ def is_starrocks_engine(engine=engine) -> bool:
     # Method 3: Query database version (fallback)
     try:
         with engine.connect() as conn:
-            version = conn.execute(text("SELECT CURRENT_VERSION()")).scalar()
+            print("connecting to get database version...")
+            version = conn.execute(text("SELECT VERSION();")).scalar()
             print(version.lower())
             return 'starrocks' in version.lower()
-    except:
+    except Exception as e:
+        print("failed", str(e))
         return False
 
 def connect_db():

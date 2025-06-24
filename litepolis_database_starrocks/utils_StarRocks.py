@@ -264,6 +264,7 @@ def create_db_and_tables():
     Relies on models being imported beforehand.
     """
     metadata = SQLModel.metadata
+    print("inside create_db_and_tables()")
 
     # --- Populate registry using Metadata AFTER models are imported ---
     try:

@@ -21,7 +21,7 @@ class UserCluster(SQLModel, table=True):
     conversation_id: UUID = Field(foreign_key="conversations.id")
     cluster: int
 
-    user: Optional["User"] = Relationship(back_populates="user_cluster")
+    user: Optional["User"] = Relationship(back_populates="user_clusters")
     conversation: Optional["Conversation"] = Relationship(back_populates="clusters")
 
 class UserClusterManager:
@@ -53,7 +53,7 @@ class UserClusterManager:
             return cluster_instance
     
     @staticmethod
-    def read_userCluster_by_user_and_conversation(user_id: UUID, conversation_id: UUID) -> Optional[UserPca]:
+    def read_userCluster_by_user_and_conversation(user_id: UUID, conversation_id: UUID) -> Optional[UserCluster]:
         with get_session() as session:
             return session.exec(
                 select(UserCluster)

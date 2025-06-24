@@ -1,13 +1,14 @@
 from typing import Dict, Any, List
 
-from .Comment import CommentManager
-from .Conversation import ConversationManager
-from .UserCluster import UserClusterManager
-from .UserPca import UserPcaManager
-from .User import UserManager
-from .Vote import VoteManager
+from .Comment import Comment, CommentManager
+from .Conversation import Conversation, ConversationManager
+from .UserCluster import UserCluster, UserClusterManager
+from .UserPca import UserPca, UserPcaManager
+from .User import UserManager, UserManager
+from .Vote import Vote, VoteManager
 
 from .utils_StarRocks import create_db_and_tables
+print("Calling create_db_and_tables()")
 create_db_and_tables()
 
 class DatabaseActor(

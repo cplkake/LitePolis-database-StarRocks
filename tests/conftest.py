@@ -1,10 +1,16 @@
 import pytest
-from litepolis_database_starrocks import DatabaseActor
+from litepolis_database_starrocks import DatabaseActor, create_db_and_tables
 from tests.utils import generate_unique_username
+
+@pytest.fixture(scope="session", autouse=True)
+def initialize_database():
+    print("creating database tables before running tests...")
+    create_db_and_tables()
 
 @pytest.fixture(scope="function")
 def db_session():
-    from litepolis_database_starrocks.utils_StarRocks import get_session
+    from litepolis_database_starrocks.utils import get_session
+    print("got the session")
     with get_session() as session:
         yield session
 
